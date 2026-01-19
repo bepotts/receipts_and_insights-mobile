@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		2958330A2F1EC44600F2CC80 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 295833092F1EC44600F2CC80 /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		2904A4EF2F16F7F000F489A4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,7 @@
 		2904A4DF2F16F7EF00F489A4 /* receipts_and_insights-mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "receipts_and_insights-mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2904A4EE2F16F7F000F489A4 /* receipts_and_insights-mobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "receipts_and_insights-mobileTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2904A4F82F16F7F000F489A4 /* receipts_and_insights-mobileUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "receipts_and_insights-mobileUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		295833092F1EC44600F2CC80 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +80,7 @@
 		2904A4D62F16F7EF00F489A4 = {
 			isa = PBXGroup;
 			children = (
+				295833092F1EC44600F2CC80 /* README.md */,
 				2904A4E12F16F7EF00F489A4 /* receipts_and_insights-mobile */,
 				2904A4F12F16F7F000F489A4 /* receipts_and_insights-mobileTests */,
 				2904A4FB2F16F7F000F489A4 /* receipts_and_insights-mobileUITests */,
@@ -216,6 +222,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2958330A2F1EC44600F2CC80 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
