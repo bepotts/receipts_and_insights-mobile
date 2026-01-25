@@ -19,6 +19,7 @@ struct LoginView: View {
     @State private var showError: Bool = false
     @State private var errorMessage: String = ""
     @State private var showSuccess: Bool = false
+    @State private var isLoading: Bool = false
     
     var body: some View {
         NavigationView {
@@ -117,15 +118,27 @@ struct LoginView: View {
                     }
                     
                     // Sign Up Button
-                    Button(action: signUp) {
-                        Text("Sign Up")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 50)
-                            .background(Color.blue)
-                            .cornerRadius(12)
+                    Button(action: {
+                        Task {
+                            await signUp()
+                        }
+                    }) {
+                        if isLoading {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50)
+                        } else {
+                            Text("Sign Up")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 50)
+                        }
                     }
+                    .background(Color.blue)
+                    .cornerRadius(12)
+                    .disabled(isLoading)
                     .padding(.horizontal, 24)
                     .padding(.top, 8)
                     
@@ -136,10 +149,16 @@ struct LoginView: View {
         }
     }
     
-    private func signUp() {
+    private func signUp() async {
         // Reset error state
         showError = false
         errorMessage = ""
+        showSuccess = false
+        isLoading = true
+        
+        defer {
+            isLoading = false
+        }
         
         // Validate inputs
         guard !firstName.isEmpty else {
@@ -177,29 +196,42 @@ struct LoginView: View {
             return
         }
         
-        // Hash the password
-        let hashedPassword = hashPassword(password)
-        
-        // Create new user
-        let newUser = User(
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            password: hashedPassword
-        )
-        
-        // Save to SwiftData (password won't be persisted due to @Transient)
-        modelContext.insert(newUser)
-        
-        // Show success message
-        showSuccess = true
-        
-        // Clear form fields
-        firstName = ""
-        lastName = ""
-        email = ""
-        password = ""
-        passwordConfirmation = ""
+        // Make HTTP POST request
+        do {
+            try await Networking.signUp(
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: password
+            )
+            
+            // Hash the password for local storage
+            let hashedPassword = hashPassword(password)
+            
+            // Create new user
+            let newUser = User(
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: hashedPassword
+            )
+            
+            // Save to SwiftData (password won't be persisted due to @Transient)
+            modelContext.insert(newUser)
+            
+            // Show success message
+            showSuccess = true
+            
+            // Clear form fields
+            firstName = ""
+            lastName = ""
+            email = ""
+            password = ""
+            passwordConfirmation = ""
+            
+        } catch {
+            showError(message: "Failed to create account: \(error.localizedDescription)")
+        }
     }
     
     private func showError(message: String) {

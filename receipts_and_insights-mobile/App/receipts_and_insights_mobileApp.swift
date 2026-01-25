@@ -10,6 +10,7 @@ import SwiftData
 
 @main
 struct receipts_and_insights_mobileApp: App {
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             User.self,
@@ -24,6 +25,7 @@ struct receipts_and_insights_mobileApp: App {
     }()
 
     var body: some Scene {
+        
         WindowGroup {
             LoginView()
         }
