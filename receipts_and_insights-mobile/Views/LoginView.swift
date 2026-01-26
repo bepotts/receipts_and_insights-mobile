@@ -11,6 +11,7 @@ import CryptoKit
 
 struct LoginView: View {
     @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject private var userManager: UserManager
     @State private var firstName: String = ""
     @State private var lastName: String = ""
     @State private var email: String = ""
@@ -223,6 +224,9 @@ struct LoginView: View {
             // Save to SwiftData (password won't be persisted due to @Transient)
             modelContext.insert(newUser)
             
+            // Set the user in UserManager so it can be accessed throughout the app
+            userManager.setUser(newUser)
+            
             // Navigate to landing page
             showLandingPage = true
             
@@ -262,4 +266,5 @@ struct CustomTextFieldStyle: TextFieldStyle {
 #Preview {
     LoginView()
         .modelContainer(for: User.self, inMemory: true)
+        .environmentObject(UserManager())
 }

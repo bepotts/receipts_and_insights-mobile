@@ -10,6 +10,7 @@ import SwiftData
 
 @main
 struct receipts_and_insights_mobileApp: App {
+    @StateObject private var userManager = UserManager()
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -30,5 +31,6 @@ struct receipts_and_insights_mobileApp: App {
             LoginView()
         }
         .modelContainer(sharedModelContainer)
+        .environmentObject(userManager)
     }
 }

@@ -34,22 +34,9 @@
 		295833092F1EC44600F2CC80 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		295833192F26B50E00F2CC80 /* Exceptions for "receipts_and_insights-mobile" folder in "receipts_and_insights-mobile" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"receipts-and-insights-mobile-Info.plist",
-			);
-			target = 2904A4DE2F16F7EF00F489A4 /* receipts_and_insights-mobile */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		2904A4E12F16F7EF00F489A4 /* receipts_and_insights-mobile */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				295833192F26B50E00F2CC80 /* Exceptions for "receipts_and_insights-mobile" folder in "receipts_and_insights-mobile" target */,
-			);
 			path = "receipts_and_insights-mobile";
 			sourceTree = "<group>";
 		};
