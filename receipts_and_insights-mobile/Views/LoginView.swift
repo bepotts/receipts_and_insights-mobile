@@ -20,6 +20,7 @@ struct LoginView: View {
     @State private var errorMessage: String = ""
     @State private var showSuccess: Bool = false
     @State private var isLoading: Bool = false
+    @State private var showLandingPage: Bool = false
     
     var body: some View {
         NavigationView {
@@ -147,6 +148,9 @@ struct LoginView: View {
             }
             .navigationBarHidden(true)
         }
+        .fullScreenCover(isPresented: $showLandingPage) {
+            LandingPageView()
+        }
     }
     
     private func signUp() async {
@@ -219,15 +223,8 @@ struct LoginView: View {
             // Save to SwiftData (password won't be persisted due to @Transient)
             modelContext.insert(newUser)
             
-            // Show success message
-            showSuccess = true
-            
-            // Clear form fields
-            firstName = ""
-            lastName = ""
-            email = ""
-            password = ""
-            passwordConfirmation = ""
+            // Navigate to landing page
+            showLandingPage = true
             
         } catch {
             showError(message: "Failed to create account: \(error.localizedDescription)")

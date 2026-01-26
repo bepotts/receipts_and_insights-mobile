@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os
 
 /// Networking enum that handles all HTTP network requests for the application.
 /// Provides static methods for making API calls to the backend server.
@@ -44,7 +45,7 @@ enum Networking {
     /// - Note: The function logs the server address and response details for debugging purposes.
     static func signUp(firstName: String, lastName: String, email: String, password: String) async throws {
         let serverAddress = AppConfig.loginRoute
-        print("[signUp] serverAddress: \(serverAddress)")
+        Logger.networking.info("[signUp] serverAddress: \(serverAddress)")
         
         guard let url = URL(string: "\(serverAddress)") else {
             throw URLError(.badURL)
@@ -70,8 +71,8 @@ enum Networking {
         }
         
         let responseBody = String(data: data, encoding: .utf8) ?? "<unable to decode>"
-        print("[signUp] Response status: \(httpResponse.statusCode)")
-        print("[signUp] Response body: \(responseBody)")
+        Logger.networking.info("[signUp] Response status: \(httpResponse.statusCode)")
+        Logger.networking.info("[signUp] Response body: \(responseBody)")
         
         guard (200...299).contains(httpResponse.statusCode) else {
             if let errorDict = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
