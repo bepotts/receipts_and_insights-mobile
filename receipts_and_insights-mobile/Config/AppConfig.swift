@@ -8,15 +8,15 @@
 import Foundation
 
 struct AppConfig {
-    static var serverAddress: String {
-        guard let serverAddress = Bundle.main.object(forInfoDictionaryKey: "SERVER_ADDRESS") as? String else {
-            fatalError("SERVER_ADDRESS not found in Info.plist. Please ensure the xcconfig file is properly configured and the Info.plist contains the SERVER_ADDRESS key.")
+    static var loginRoute: String {
+        guard let loginRoute = Bundle.main.object(forInfoDictionaryKey: "LOGIN_ROUTE") as? String else {
+            fatalError("LOGIN_ROUTE not found in Info.plist. Please ensure the xcconfig file is properly configured and the Info.plist contains the SERVER_ADDRESS key.")
         }
         
-        guard !serverAddress.isEmpty else {
-            fatalError("SERVER_ADDRESS is empty. Please set the SERVER_ADDRESS value in your xcconfig file (Debug.xcconfig or Release.xcconfig).")
+        guard !loginRoute.isEmpty else {
+            fatalError("LOGIN_ROUTE is empty. Please set the LOGIN_ROUTE value in your xcconfig file (Debug.xcconfig or Release.xcconfig).")
         }
         
-        return serverAddress
+        return loginRoute
     }
 }

@@ -6,6 +6,8 @@
 	<array>
 		<dict/>
 	</array>
+	<key>LOGIN_ROUTE</key>
+	<string>$(LOGIN_ROUTE)</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -19,7 +21,5 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>SERVER_ADDRESS</key>
-	<string>$(SERVER_ADDRESS)</string>
 </dict>
 </plist>

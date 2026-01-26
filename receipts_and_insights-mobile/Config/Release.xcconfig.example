@@ -8,7 +8,10 @@
 // Configuration settings file format documentation can be found at:
 // https://developer.apple.com/documentation/xcode/adding-a-build-configuration-file-to-your-project
 
+// Define a helper to escape the double slash
 SLASH = /
+// Root of the routes for the backend server
+API_ROOT=""
 
-
-SERVER_ADDRESS = ""
+// Routes
+LOGIN_ROUTE= ""

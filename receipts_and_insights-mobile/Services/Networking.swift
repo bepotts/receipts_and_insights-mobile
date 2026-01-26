@@ -24,7 +24,7 @@ enum Networking {
     }
     
     static func signUp(firstName: String, lastName: String, email: String, password: String) async throws {
-        let serverAddress = AppConfig.serverAddress
+        let serverAddress = AppConfig.loginRoute
         print("[signUp] serverAddress: \(serverAddress)")
         
         guard let url = URL(string: "\(serverAddress)") else {
