@@ -7,8 +7,12 @@
 
 import Foundation
 
+/// Networking enum that handles all HTTP network requests for the application.
+/// Provides static methods for making API calls to the backend server.
 enum Networking {
     
+    /// Payload structure for user sign-up requests.
+    /// Encodes user registration data to be sent to the server as JSON.
     struct SignUpPayload: Encodable {
         let firstName: String
         let lastName: String
@@ -23,6 +27,21 @@ enum Networking {
         }
     }
     
+    /// Sends a sign-up request to the server to create a new user account.
+    ///
+    /// This function makes an HTTP POST request to the login route configured in AppConfig.
+    /// The user data is encoded as JSON and sent in the request body.
+    ///
+    /// - Parameters:
+    ///   - firstName: The user's first name
+    ///   - lastName: The user's last name
+    ///   - email: The user's email address
+    ///   - password: The user's password (plain text)
+    ///
+    /// - Throws: `URLError` if the URL is invalid or the request fails.
+    ///           `NSError` with server error message if the server returns a non-2xx status code.
+    ///
+    /// - Note: The function logs the server address and response details for debugging purposes.
     static func signUp(firstName: String, lastName: String, email: String, password: String) async throws {
         let serverAddress = AppConfig.loginRoute
         print("[signUp] serverAddress: \(serverAddress)")
