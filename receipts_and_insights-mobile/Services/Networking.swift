@@ -27,7 +27,7 @@ enum Networking {
         let serverAddress = AppConfig.serverAddress
         print("[signUp] serverAddress: \(serverAddress)")
         
-        guard let url = URL(string: "\(serverAddress)/signup") else {
+        guard let url = URL(string: "\(serverAddress)") else {
             throw URLError(.badURL)
         }
         
