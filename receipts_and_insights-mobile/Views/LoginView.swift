@@ -28,80 +28,10 @@ struct LoginView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     // Header
-                    VStack(spacing: 8) {
-                        Text("Create Account")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                        
-                        Text("Sign up to get started")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                    }
-                    .padding(.top, 40)
-                    .padding(.bottom, 20)
+                    headerView
                     
                     // Form Fields
-                    VStack(spacing: 16) {
-                        // First Name
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("First Name")
-                                .font(.subheadline)
-                                .fontWeight(.medium)
-                            
-                            TextField("Enter your first name", text: $firstName)
-                                .textFieldStyle(CustomTextFieldStyle())
-                                .textContentType(.givenName)
-                                .autocapitalization(.words)
-                        }
-                        
-                        // Last Name
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Last Name")
-                                .font(.subheadline)
-                                .fontWeight(.medium)
-                            
-                            TextField("Enter your last name", text: $lastName)
-                                .textFieldStyle(CustomTextFieldStyle())
-                                .textContentType(.familyName)
-                                .autocapitalization(.words)
-                        }
-                        
-                        // Email
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Email")
-                                .font(.subheadline)
-                                .fontWeight(.medium)
-                            
-                            TextField("Enter your email", text: $email)
-                                .textFieldStyle(CustomTextFieldStyle())
-                                .textContentType(.emailAddress)
-                                .autocapitalization(.none)
-                                .keyboardType(.emailAddress)
-                        }
-                        
-                        // Password
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Password")
-                                .font(.subheadline)
-                                .fontWeight(.medium)
-                            
-                            SecureField("Enter your password", text: $password)
-                                .textFieldStyle(CustomTextFieldStyle())
-                                .textContentType(.newPassword)
-                        }
-                        
-                        // Password Confirmation
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Confirm Password")
-                                .font(.subheadline)
-                                .fontWeight(.medium)
-                            
-                            SecureField("Confirm your password", text: $passwordConfirmation)
-                                .textFieldStyle(CustomTextFieldStyle())
-                                .textContentType(.newPassword)
-                        }
-                    }
-                    .padding(.horizontal, 24)
+                    formFieldsView
                     
                     // Error Message
                     if showError {
@@ -120,29 +50,7 @@ struct LoginView: View {
                     }
                     
                     // Sign Up Button
-                    Button(action: {
-                        Task {
-                            await signUp()
-                        }
-                    }) {
-                        if isLoading {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 50)
-                        } else {
-                            Text("Sign Up")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 50)
-                        }
-                    }
-                    .background(Color.blue)
-                    .cornerRadius(12)
-                    .disabled(isLoading)
-                    .padding(.horizontal, 24)
-                    .padding(.top, 8)
+                    signUpButton
                     
                     Spacer()
                 }
@@ -152,6 +60,130 @@ struct LoginView: View {
         .fullScreenCover(isPresented: $showLandingPage) {
             LandingPageView()
         }
+    }
+    
+    private var headerView: some View {
+        VStack(spacing: 8) {
+            Text("Create Account")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+            
+            Text("Sign up to get started")
+                .font(.subheadline)
+                .foregroundColor(.gray)
+        }
+        .padding(.top, 40)
+        .padding(.bottom, 20)
+    }
+    
+    private var firstNameField: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("First Name")
+                .font(.subheadline)
+                .fontWeight(.medium)
+            
+            TextField("Enter your first name", text: $firstName)
+                .textFieldStyle(CustomTextFieldStyle())
+                .textContentType(.givenName)
+                .autocapitalization(.words)
+        }
+    }
+    
+    private var lastNameField: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Last Name")
+                .font(.subheadline)
+                .fontWeight(.medium)
+            
+            TextField("Enter your last name", text: $lastName)
+                .textFieldStyle(CustomTextFieldStyle())
+                .textContentType(.familyName)
+                .autocapitalization(.words)
+        }
+    }
+    
+    private var emailField: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Email")
+                .font(.subheadline)
+                .fontWeight(.medium)
+            
+            TextField("Enter your email", text: $email)
+                .textFieldStyle(CustomTextFieldStyle())
+                .textContentType(.emailAddress)
+                .autocapitalization(.none)
+                .keyboardType(.emailAddress)
+        }
+    }
+    
+    private var passwordField: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Password")
+                .font(.subheadline)
+                .fontWeight(.medium)
+            
+            SecureField("Enter your password", text: $password)
+                .textFieldStyle(CustomTextFieldStyle())
+                .textContentType(.newPassword)
+        }
+    }
+    
+    private var passwordConfirmationField: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Confirm Password")
+                .font(.subheadline)
+                .fontWeight(.medium)
+            
+            SecureField("Confirm your password", text: $passwordConfirmation)
+                .textFieldStyle(CustomTextFieldStyle())
+                .textContentType(.newPassword)
+        }
+    }
+    
+    private var formFieldsView: some View {
+        VStack(spacing: 16) {
+            // First Name
+            firstNameField
+            
+            // Last Name
+            lastNameField
+            
+            // Email
+            emailField
+            
+            // Password
+            passwordField
+            
+            // Password Confirmation
+            passwordConfirmationField
+        }
+        .padding(.horizontal, 24)
+    }
+    
+    private var signUpButton: some View {
+        Button(action: {
+            Task {
+                await signUp()
+            }
+        }) {
+            if isLoading {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 50)
+            } else {
+                Text("Sign Up")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 50)
+            }
+        }
+        .background(Color.blue)
+        .cornerRadius(12)
+        .disabled(isLoading)
+        .padding(.horizontal, 24)
+        .padding(.top, 8)
     }
     
     private func signUp() async {
