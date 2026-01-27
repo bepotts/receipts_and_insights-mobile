@@ -10,19 +10,19 @@ import SwiftUI
 struct LandingPageView: View {
     @EnvironmentObject private var userManager: UserManager
     @Environment(\.dismiss) private var dismiss
-    
+
     var body: some View {
         NavigationView {
             VStack {
                 Text("This is the landing page view.")
                     .font(.title)
                     .padding()
-                
+
                 if let user = userManager.currentUser {
                     VStack(spacing: 8) {
                         Text("Welcome, \(user.fullName)!")
                             .font(.headline)
-                        
+
                         Text("Email: \(user.email)")
                             .font(.subheadline)
                             .foregroundColor(.gray)
@@ -43,7 +43,7 @@ struct LandingPageView: View {
             }
         }
     }
-    
+
     private func logout() {
         userManager.clearUser()
         dismiss()
@@ -54,7 +54,7 @@ struct LandingPageView: View {
     let userManager = UserManager()
     let sampleUser = User(firstName: "John", lastName: "Doe", email: "john@example.com", password: "")
     userManager.setUser(sampleUser)
-    
+
     return LandingPageView()
         .environmentObject(userManager)
 }

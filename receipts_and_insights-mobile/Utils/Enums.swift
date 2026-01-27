@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 // MARK: - AppStrings
 
 enum AppStrings {

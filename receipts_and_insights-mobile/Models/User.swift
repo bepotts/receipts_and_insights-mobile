@@ -13,20 +13,20 @@ final class User {
     var firstName: String
     var lastName: String
     var email: String
-    
+
     @Transient
     var password: String = ""
-    
+
     var createdAt: Date
-    
+
     init(firstName: String, lastName: String, email: String, password: String) {
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
         self.password = password
-        self.createdAt = Date()
+        createdAt = Date()
     }
-    
+
     var fullName: String {
         "\(firstName) \(lastName)"
     }

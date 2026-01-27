@@ -11,6 +11,6 @@ extension Logger {
     static let notes: Logger = .init(subsystem: AppStrings.bundle, category: "notes")
 
     static let users: Logger = .init(subsystem: AppStrings.bundle, category: "users")
-    
+
     static let networking: Logger = .init(subsystem: AppStrings.bundle, category: "networking")
 }

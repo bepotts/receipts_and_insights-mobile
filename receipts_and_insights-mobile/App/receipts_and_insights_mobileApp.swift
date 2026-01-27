@@ -5,13 +5,13 @@
 //  Created by Brandon Potts on 1/13/26.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @main
 struct receipts_and_insights_mobileApp: App {
     @StateObject private var userManager = UserManager()
-    
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             User.self,
@@ -26,7 +26,6 @@ struct receipts_and_insights_mobileApp: App {
     }()
 
     var body: some Scene {
-        
         WindowGroup {
             LoginView()
         }
