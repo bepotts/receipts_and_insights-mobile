@@ -30,7 +30,7 @@ struct UserManagerTests {
             firstName: "John",
             lastName: "Doe",
             email: "john.doe@example.com",
-            password: "password123"
+            session_token: "test_token"
         )
 
         await userManager.setUser(testUser)
@@ -49,7 +49,7 @@ struct UserManagerTests {
             firstName: "Jane",
             lastName: "Smith",
             email: "jane.smith@example.com",
-            password: "password"
+            session_token: "test_token"
         )
 
         await userManager.setUser(testUser)
@@ -69,7 +69,7 @@ struct UserManagerTests {
             firstName: "Test",
             lastName: "User",
             email: "test@example.com",
-            password: "password"
+            session_token: "test_token"
         )
 
         #expect(await userManager.isLoggedIn == false)

@@ -13,18 +13,13 @@ final class User {
     var firstName: String
     var lastName: String
     var email: String
+    var session_token: String
 
-    @Transient
-    var password: String = ""
-
-    var createdAt: Date
-
-    init(firstName: String, lastName: String, email: String, password: String) {
+    init(firstName: String, lastName: String, email: String, session_token: String) {
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
-        self.password = password
-        createdAt = Date()
+        self.session_token = session_token
     }
 
     var fullName: String {

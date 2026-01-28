@@ -2,23 +2,19 @@
 //  LoginView.swift
 //  receipts_and_insights-mobile
 //
-//  Created by Brandon Potts on 1/19/26.
+//  Created by Brandon Potts on 1/28/26.
 //
 
 import SwiftData
 import SwiftUI
 
-struct CreateAccountView: View {
+struct LoginView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var userManager: UserManager
-    @State private var firstName: String = ""
-    @State private var lastName: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var passwordConfirmation: String = ""
     @State private var showError: Bool = false
     @State private var errorMessage: String = ""
-    @State private var showSuccess: Bool = false
     @State private var isLoading: Bool = false
     @State private var showLandingPage: Bool = false
 
@@ -40,14 +36,6 @@ struct CreateAccountView: View {
                             .padding(.horizontal, 24)
                     }
 
-                    // Success Message
-                    if showSuccess {
-                        Text("Account created successfully!")
-                            .font(.caption)
-                            .foregroundColor(.green)
-                            .padding(.horizontal, 24)
-                    }
-
                     // Sign Up Button
                     signUpButton
 
@@ -63,42 +51,16 @@ struct CreateAccountView: View {
 
     private var headerView: some View {
         VStack(spacing: 8) {
-            Text("Create Account")
+            Text("Login")
                 .font(.largeTitle)
                 .fontWeight(.bold)
 
-            Text("Sign up to get started")
+            Text("Sign in with your email and password")
                 .font(.subheadline)
                 .foregroundColor(.gray)
         }
         .padding(.top, 40)
         .padding(.bottom, 20)
-    }
-
-    private var firstNameField: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("First Name")
-                .font(.subheadline)
-                .fontWeight(.medium)
-
-            TextField("Enter your first name", text: $firstName)
-                .textFieldStyle(CustomTextFieldStyle())
-                .textContentType(.givenName)
-                .autocapitalization(.words)
-        }
-    }
-
-    private var lastNameField: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Last Name")
-                .font(.subheadline)
-                .fontWeight(.medium)
-
-            TextField("Enter your last name", text: $lastName)
-                .textFieldStyle(CustomTextFieldStyle())
-                .textContentType(.familyName)
-                .autocapitalization(.words)
-        }
     }
 
     private var emailField: some View {
@@ -123,38 +85,17 @@ struct CreateAccountView: View {
 
             SecureField("Enter your password", text: $password)
                 .textFieldStyle(CustomTextFieldStyle())
-                .textContentType(.newPassword)
-        }
-    }
-
-    private var passwordConfirmationField: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Confirm Password")
-                .font(.subheadline)
-                .fontWeight(.medium)
-
-            SecureField("Confirm your password", text: $passwordConfirmation)
-                .textFieldStyle(CustomTextFieldStyle())
-                .textContentType(.newPassword)
+                .textContentType(.password)
         }
     }
 
     private var formFieldsView: some View {
         VStack(spacing: 16) {
-            // First Name
-            firstNameField
-
-            // Last Name
-            lastNameField
-
             // Email
             emailField
 
             // Password
             passwordField
-
-            // Password Confirmation
-            passwordConfirmationField
         }
         .padding(.horizontal, 24)
     }
@@ -162,7 +103,7 @@ struct CreateAccountView: View {
     private var signUpButton: some View {
         Button(action: {
             Task {
-                await signUp()
+                await signInUser()
             }
         }) {
             if isLoading {
@@ -185,11 +126,10 @@ struct CreateAccountView: View {
         .padding(.top, 8)
     }
 
-    private func signUp() async {
+    private func signInUser() async {
         // Reset error state
         showError = false
         errorMessage = ""
-        showSuccess = false
         isLoading = true
 
         defer {
@@ -197,16 +137,6 @@ struct CreateAccountView: View {
         }
 
         // Validate inputs
-        guard !firstName.isEmpty else {
-            showError(message: "Please enter your first name")
-            return
-        }
-
-        guard !lastName.isEmpty else {
-            showError(message: "Please enter your last name")
-            return
-        }
-
         guard !email.isEmpty else {
             showError(message: "Please enter your email")
             return
@@ -227,31 +157,21 @@ struct CreateAccountView: View {
             return
         }
 
-        guard password == passwordConfirmation else {
-            showError(message: "Passwords do not match")
-            return
-        }
-
-        // Make HTTP POST request
+        // Make HTTP POST request to sign in
         do {
-            let newUser = try await Networking.signUp(
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                password: password
-            )
+            let user = try await Networking.signIn(email: email, password: password)
 
             // Save to SwiftData
-            modelContext.insert(newUser)
+            modelContext.insert(user)
 
             // Set the user in UserManager so it can be accessed throughout the app
-            userManager.setUser(newUser)
+            userManager.setUser(user)
 
-            // Navigate to landing page
+            // Navigate to landing page on success
             showLandingPage = true
 
         } catch {
-            showError(message: "Failed to create account: \(error.localizedDescription)")
+            showError(message: "Failed to sign in: \(error.localizedDescription)")
         }
     }
 
@@ -267,18 +187,8 @@ struct CreateAccountView: View {
     }
 }
 
-// Custom TextField Style
-struct CustomTextFieldStyle: TextFieldStyle {
-    func _body(configuration: TextField<Self._Label>) -> some View {
-        configuration
-            .padding()
-            .background(Color(.systemGray6))
-            .cornerRadius(10)
-    }
-}
-
 #Preview {
-    CreateAccountView()
+    LoginView()
         .modelContainer(for: User.self, inMemory: true)
         .environmentObject(UserManager())
 }

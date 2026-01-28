@@ -27,7 +27,7 @@ struct receipts_and_insights_mobileApp: App {
 
     var body: some Scene {
         WindowGroup {
-            CreateAccountView()
+            LoginView()
         }
         .modelContainer(sharedModelContainer)
         .environmentObject(userManager)

@@ -52,7 +52,7 @@ struct LandingPageView: View {
 
 #Preview {
     let userManager = UserManager()
-    let sampleUser = User(firstName: "John", lastName: "Doe", email: "john@example.com", password: "")
+    let sampleUser = User(firstName: "John", lastName: "Doe", email: "john@example.com", session_token: "test_token")
     userManager.setUser(sampleUser)
 
     return LandingPageView()

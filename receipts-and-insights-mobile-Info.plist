@@ -21,5 +21,7 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>SIGN_UP_ROUTE</key>
+	<string>$(SIGN_UP_ROUTE)</string>
 </dict>
 </plist>

@@ -14,25 +14,24 @@ import Testing
 /// Verifies that User instances are correctly initialized and computed properties work as expected.
 struct UserTests {
     /// Tests that a User can be initialized with all required properties
-    /// and that all properties are correctly assigned, including the automatic creation timestamp.
+    /// and that all properties are correctly assigned.
     @Test func userInitialization() async throws {
         let firstName = "John"
         let lastName = "Doe"
         let email = "john.doe@example.com"
-        let password = "password123"
+        let sessionToken = "test_session_token"
 
         let user = User(
             firstName: firstName,
             lastName: lastName,
             email: email,
-            password: password
+            session_token: sessionToken
         )
 
         #expect(user.firstName == firstName)
         #expect(user.lastName == lastName)
         #expect(user.email == email)
-        #expect(user.password == password)
-        #expect(user.createdAt <= Date())
+        #expect(user.session_token == sessionToken)
     }
 
     /// Tests that the fullName computed property correctly concatenates
@@ -42,7 +41,7 @@ struct UserTests {
             firstName: "Jane",
             lastName: "Smith",
             email: "jane.smith@example.com",
-            password: "password"
+            session_token: "test_token"
         )
 
         #expect(user.fullName == "Jane Smith")
