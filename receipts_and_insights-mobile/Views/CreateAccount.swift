@@ -9,7 +9,7 @@ import CryptoKit
 import SwiftData
 import SwiftUI
 
-struct LoginView: View {
+struct CreateAccountView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var userManager: UserManager
     @State private var firstName: String = ""
@@ -296,7 +296,7 @@ struct CustomTextFieldStyle: TextFieldStyle {
 }
 
 #Preview {
-    LoginView()
+    CreateAccountView()
         .modelContainer(for: User.self, inMemory: true)
         .environmentObject(UserManager())
 }
