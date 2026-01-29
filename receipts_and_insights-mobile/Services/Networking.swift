@@ -34,6 +34,16 @@ enum Networking {
         let password: String
     }
 
+    /// Payload structure for sign-out requests.
+    /// Encodes the session token to be sent to the server as JSON.
+    struct SignOutPayload: Encodable {
+        let sessionToken: String
+
+        enum CodingKeys: String, CodingKey {
+            case sessionToken = "session_token"
+        }
+    }
+
     /// Sends a sign-up request to the server to create a new user account.
     ///
     /// This function makes an HTTP POST request to the login route configured in AppConfig.
@@ -167,5 +177,46 @@ enum Networking {
 
         // If response doesn't contain user data, throw an error
         throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Server response does not contain user data"])
+    }
+
+    /// Sends a sign-out request to the server with the user's session token.
+    ///
+    /// - Parameter sessionToken: The user's session token to invalidate.
+    /// - Throws: `URLError` if the URL is invalid or the request fails.
+    ///           `NSError` with server error message if the server returns a non-2xx status code.
+    static func signOut(sessionToken: String) async throws {
+        let signOutRoute = RouteURLs.signOutRoute
+        Logger.networking.info("[signOut] serverAddress: \(signOutRoute)")
+
+        guard let url = URL(string: signOutRoute) else {
+            throw URLError(.badURL)
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let payload = SignOutPayload(sessionToken: sessionToken)
+        let encoder = JSONEncoder()
+        request.httpBody = try encoder.encode(payload)
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse)
+        }
+
+        let responseBody = String(data: data, encoding: .utf8) ?? "<unable to decode>"
+        Logger.networking.info("[signOut] Response status: \(httpResponse.statusCode)")
+        Logger.networking.info("[signOut] Response body: \(responseBody)")
+
+        guard (200 ... 299).contains(httpResponse.statusCode) else {
+            if let errorDict = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+               let errorMessage = errorDict["error"] as? String
+            {
+                throw NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: errorMessage])
+            }
+            throw URLError(.badServerResponse)
+        }
     }
 }

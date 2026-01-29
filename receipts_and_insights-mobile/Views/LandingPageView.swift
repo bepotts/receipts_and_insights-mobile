@@ -5,6 +5,7 @@
 //  Created by Brandon Potts on 1/25/26.
 //
 
+import os
 import SwiftUI
 
 struct LandingPageView: View {
@@ -45,8 +46,19 @@ struct LandingPageView: View {
     }
 
     private func logout() {
-        userManager.clearUser()
-        dismiss()
+        Task {
+            if let sessionToken = userManager.currentUser?.session_token {
+                do {
+                    try await Networking.signOut(sessionToken: sessionToken)
+                } catch {
+                    Logger.networking.error("Error during logout: \(error.localizedDescription)")
+                }
+            }
+            await MainActor.run {
+                userManager.clearUser()
+                dismiss()
+            }
+        }
     }
 }
 

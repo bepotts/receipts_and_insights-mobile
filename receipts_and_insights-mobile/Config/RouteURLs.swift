@@ -32,4 +32,16 @@ enum RouteURLs {
 
         return loginRoute
     }
+
+    static var signOutRoute: String {
+        guard let signOutRoute = Bundle.main.object(forInfoDictionaryKey: "SIGN_OUT_ROUTE") as? String else {
+            fatalError("SIGN_OUT_ROUTE not found in Info.plist. Please ensure the xcconfig file is properly configured and the Info.plist contains the SIGN_OUT_ROUTE key.")
+        }
+
+        guard !signOutRoute.isEmpty else {
+            fatalError("SIGN_OUT_ROUTE is empty. Please set the SIGN_OUT_ROUTE value in your xcconfig file (Debug.xcconfig or Release.xcconfig).")
+        }
+
+        return signOutRoute
+    }
 }
