@@ -52,10 +52,10 @@ enum Networking {
     ///
     /// - Note: The function logs the server address and response details for debugging purposes.
     static func userSignUp(firstName: String, lastName: String, email: String, password: String) async throws -> User {
-        let serverAddress = RouteURLs.signUpRoute
-        Logger.networking.info("[signUp] serverAddress: \(serverAddress)")
+        let signUpRoute = RouteURLs.signUpRoute
+        Logger.networking.info("[signUp] serverAddress: \(signUpRoute)")
 
-        guard let url = URL(string: "\(serverAddress)") else {
+        guard let url = URL(string: "\(signUpRoute)") else {
             throw URLError(.badURL)
         }
 
@@ -119,10 +119,10 @@ enum Networking {
     ///
     /// - Note: The function logs the server address and response details for debugging purposes.
     static func userLogin(email: String, password: String) async throws -> User {
-        let serverAddress = RouteURLs.loginRoute
-        Logger.networking.info("[signIn] serverAddress: \(serverAddress)")
+        let loginRoute = RouteURLs.loginRoute
+        Logger.networking.info("[signIn] loginRouteAddress: \(loginRoute)")
 
-        guard let url = URL(string: "\(serverAddress)") else {
+        guard let url = URL(string: "\(loginRoute)") else {
             throw URLError(.badURL)
         }
 
