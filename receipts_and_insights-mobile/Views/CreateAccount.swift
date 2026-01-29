@@ -27,23 +27,6 @@ struct CreateAccountView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
-                    // Back button
-                    HStack {
-                        Button {
-                            dismiss()
-                        } label: {
-                            HStack(spacing: 4) {
-                                Image(systemName: "chevron.left")
-                                Text("Back")
-                            }
-                            .font(.headline)
-                            .foregroundColor(.blue)
-                        }
-                        .padding(.top, 8)
-                        .padding(.leading, 24)
-                        Spacer()
-                    }
-
                     // Header
                     headerView
 
