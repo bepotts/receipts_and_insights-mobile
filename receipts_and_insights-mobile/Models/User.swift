@@ -13,9 +13,9 @@ final class User {
     var firstName: String
     var lastName: String
     var email: String
-    var session_token: String
+    var session_token: String?
 
-    init(firstName: String, lastName: String, email: String, session_token: String) {
+    init(firstName: String, lastName: String, email: String, session_token: String? = nil) {
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
