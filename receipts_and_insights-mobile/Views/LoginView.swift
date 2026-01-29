@@ -131,9 +131,19 @@ struct LoginView: View {
     }
 
     private var createAccountButton: some View {
-        Button("Create Account") {
+        Button {
             navigateToCreateAccount = true
+        } label: {
+            Text("Create Account")
+                .font(.headline)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .frame(height: 50)
         }
+        .background(Color.blue)
+        .cornerRadius(12)
+        .padding(.horizontal, 24)
+        .padding(.top, 8)
         .navigationDestination(isPresented: $navigateToCreateAccount) {
             CreateAccountView()
         }
