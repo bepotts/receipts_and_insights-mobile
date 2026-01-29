@@ -9,6 +9,7 @@ import SwiftData
 import SwiftUI
 
 struct CreateAccountView: View {
+    @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var userManager: UserManager
     @State private var firstName: String = ""
@@ -26,6 +27,23 @@ struct CreateAccountView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
+                    // Back button
+                    HStack {
+                        Button {
+                            dismiss()
+                        } label: {
+                            HStack(spacing: 4) {
+                                Image(systemName: "chevron.left")
+                                Text("Back")
+                            }
+                            .font(.headline)
+                            .foregroundColor(.blue)
+                        }
+                        .padding(.top, 8)
+                        .padding(.leading, 24)
+                        Spacer()
+                    }
+
                     // Header
                     headerView
 

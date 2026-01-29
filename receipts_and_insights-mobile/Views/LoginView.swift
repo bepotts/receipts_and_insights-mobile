@@ -19,7 +19,7 @@ struct LoginView: View {
     @State private var showLandingPage: Bool = false
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
                     // Header
@@ -38,6 +38,9 @@ struct LoginView: View {
 
                     // Sign Up Button
                     signUpButton
+
+                    // Sign In Button (push Create Account)
+                    signInButton
 
                     Spacer()
                 }
@@ -122,6 +125,23 @@ struct LoginView: View {
         .background(Color.blue)
         .cornerRadius(12)
         .disabled(isLoading)
+        .padding(.horizontal, 24)
+        .padding(.top, 8)
+    }
+
+    private var signInButton: some View {
+        NavigationLink {
+            CreateAccountView()
+        } label: {
+            Text("Sign In")
+                .font(.headline)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .frame(height: 50)
+        }
+        .buttonStyle(.plain)
+        .background(Color.blue)
+        .cornerRadius(12)
         .padding(.horizontal, 24)
         .padding(.top, 8)
     }
