@@ -10,12 +10,12 @@ import Foundation
 enum RouteURLs {
 
     static var signUpRoute: String {
-        guard let createUserRoute = Bundle.main.object(forInfoDictionaryKey: "CREATE_USER_ROUTE") as? String else {
-            fatalError("CREATE_USER_ROUTE not found in Info.plist. Please ensure the xcconfig file is properly configured and the Info.plist contains the CREATE_USER_ROUTE key.")
+        guard let createUserRoute = Bundle.main.object(forInfoDictionaryKey: "SIGN_UP_ROUTE") as? String else {
+            fatalError("SIGN_UP_ROUTE not found in Info.plist. Please ensure the xcconfig file is properly configured and the Info.plist contains the CREATE_USER_ROUTE key.")
         }
 
         guard !createUserRoute.isEmpty else {
-            fatalError("CREATE_USER_ROUTE is empty. Please set the CREATE_USER_ROUTE value in your xcconfig file (Debug.xcconfig or Release.xcconfig).")
+            fatalError("SIGN_UP_ROUTE is empty. Please set the SIGN_UP_ROUTE0 value in your xcconfig file (Debug.xcconfig or Release.xcconfig).")
         }
 
         return createUserRoute
