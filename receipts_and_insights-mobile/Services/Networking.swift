@@ -51,7 +51,7 @@ enum Networking {
     ///           `NSError` with server error message if the server returns a non-2xx status code.
     ///
     /// - Note: The function logs the server address and response details for debugging purposes.
-    static func signUp(firstName: String, lastName: String, email: String, password: String) async throws -> User {
+    static func userSignUp(firstName: String, lastName: String, email: String, password: String) async throws -> User {
         let serverAddress = RouteURLs.signUpRoute
         Logger.networking.info("[signUp] serverAddress: \(serverAddress)")
 
@@ -118,7 +118,7 @@ enum Networking {
     ///           `NSError` with server error message if the server returns a non-2xx status code.
     ///
     /// - Note: The function logs the server address and response details for debugging purposes.
-    static func signIn(email: String, password: String) async throws -> User {
+    static func userLogin(email: String, password: String) async throws -> User {
         let serverAddress = RouteURLs.loginRoute
         Logger.networking.info("[signIn] serverAddress: \(serverAddress)")
 

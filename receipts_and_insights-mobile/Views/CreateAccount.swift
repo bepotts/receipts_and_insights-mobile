@@ -234,7 +234,7 @@ struct CreateAccountView: View {
 
         // Make HTTP POST request
         do {
-            let newUser = try await Networking.signUp(
+            let newUser = try await Networking.userSignUp(
                 firstName: firstName,
                 lastName: lastName,
                 email: email,

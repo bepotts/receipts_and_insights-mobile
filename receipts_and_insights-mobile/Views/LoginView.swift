@@ -159,7 +159,7 @@ struct LoginView: View {
 
         // Make HTTP POST request to sign in
         do {
-            let user = try await Networking.signIn(email: email, password: password)
+            let user = try await Networking.userLogin(email: email, password: password)
 
             // Save to SwiftData
             modelContext.insert(user)
