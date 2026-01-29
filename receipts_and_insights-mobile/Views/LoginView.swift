@@ -17,6 +17,7 @@ struct LoginView: View {
     @State private var errorMessage: String = ""
     @State private var isLoading: Bool = false
     @State private var showLandingPage: Bool = false
+    @State private var navigateToCreateAccount: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -37,10 +38,10 @@ struct LoginView: View {
                     }
 
                     // Sign Up Button
-                    signUpButton
+                    loginButton
 
-                    // Sign In Button (push Create Account)
-                    signInButton
+                    // Create Account Button (push Create Account)
+                    createAccountButton
 
                     Spacer()
                 }
@@ -103,7 +104,7 @@ struct LoginView: View {
         .padding(.horizontal, 24)
     }
 
-    private var signUpButton: some View {
+    private var loginButton: some View {
         Button(action: {
             Task {
                 await signInUser()
@@ -115,7 +116,7 @@ struct LoginView: View {
                     .frame(maxWidth: .infinity)
                     .frame(height: 50)
             } else {
-                Text("Sign Up")
+                Text("Log In")
                     .font(.headline)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
@@ -129,21 +130,13 @@ struct LoginView: View {
         .padding(.top, 8)
     }
 
-    private var signInButton: some View {
-        NavigationLink {
-            CreateAccountView()
-        } label: {
-            Text("Sign In")
-                .font(.headline)
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .frame(height: 50)
+    private var createAccountButton: some View {
+        Button("Create Account") {
+            navigateToCreateAccount = true
         }
-        .buttonStyle(.plain)
-        .background(Color.blue)
-        .cornerRadius(12)
-        .padding(.horizontal, 24)
-        .padding(.top, 8)
+        .navigationDestination(isPresented: $navigateToCreateAccount) {
+            CreateAccountView()
+        }
     }
 
     private func signInUser() async {
