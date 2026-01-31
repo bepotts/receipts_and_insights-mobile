@@ -48,9 +48,6 @@ struct LoginView: View {
             }
             .navigationBarHidden(true)
         }
-        .fullScreenCover(isPresented: $showLandingPage) {
-            LandingPageView()
-        }
     }
 
     private var headerView: some View {
@@ -128,6 +125,9 @@ struct LoginView: View {
         .disabled(isLoading)
         .padding(.horizontal, 24)
         .padding(.top, 8)
+        .navigationDestination(isPresented: $showLandingPage) {
+            LandingPageView()
+        }
     }
 
     private var createAccountButton: some View {

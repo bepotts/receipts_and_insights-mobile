@@ -104,7 +104,7 @@ enum Networking {
         // Parse the response to extract user data and session token
         if let userDict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
             let sessionToken = userDict["session_token"] as? String ?? userDict["sessionToken"] as? String ?? ""
-            
+
             // Create and return user object
             return User(firstName: firstName, lastName: lastName, email: email, session_token: sessionToken)
         }
@@ -170,7 +170,7 @@ enum Networking {
             let lastName = userDict["last_name"] as? String ?? userDict["lastName"] as? String ?? ""
             let userEmail = userDict["email"] as? String ?? email
             let sessionToken = userDict["session_token"] as? String ?? userDict["sessionToken"] as? String ?? ""
-            
+
             // Create and return user object
             return User(firstName: firstName, lastName: lastName, email: userEmail, session_token: sessionToken)
         }

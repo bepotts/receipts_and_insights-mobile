@@ -8,7 +8,6 @@
 import Foundation
 
 enum RouteURLs {
-
     static var signUpRoute: String {
         guard let createUserRoute = Bundle.main.object(forInfoDictionaryKey: "SIGN_UP_ROUTE") as? String else {
             fatalError("SIGN_UP_ROUTE not found in Info.plist. Please ensure the xcconfig file is properly configured and the Info.plist contains the CREATE_USER_ROUTE key.")

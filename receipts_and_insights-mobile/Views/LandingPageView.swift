@@ -11,6 +11,7 @@ import SwiftUI
 struct LandingPageView: View {
     @EnvironmentObject private var userManager: UserManager
     @Environment(\.dismiss) private var dismiss
+    @State private var showLoginView: Bool = false
 
     var body: some View {
         NavigationView {
@@ -40,6 +41,9 @@ struct LandingPageView: View {
                         Text("Logout")
                             .foregroundColor(.red)
                     }
+                    .navigationDestination(isPresented: $showLoginView) {
+                        LoginView()
+                    }
                 }
             }
         }
@@ -56,7 +60,7 @@ struct LandingPageView: View {
             }
             await MainActor.run {
                 userManager.clearUser()
-                dismiss()
+                showLoginView = true
             }
         }
     }
