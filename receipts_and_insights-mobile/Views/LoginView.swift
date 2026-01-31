@@ -15,6 +15,7 @@ struct LoginView: View {
     @State private var password: String = ""
     @State private var showError: Bool = false
     @State private var errorMessage: String = ""
+    @State private var showAuthErrorAlert: Bool = false
     @State private var isLoading: Bool = false
     @State private var showLandingPage: Bool = false
     @State private var navigateToCreateAccount: Bool = false
@@ -47,6 +48,11 @@ struct LoginView: View {
                 }
             }
             .navigationBarHidden(true)
+            .alert("Login Failed", isPresented: $showAuthErrorAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("Email or password is incorrect")
+            }
         }
     }
 
@@ -194,7 +200,11 @@ struct LoginView: View {
             showLandingPage = true
 
         } catch {
-            showError(message: "Failed to sign in: \(error.localizedDescription)")
+            if case NetworkError.unauthorized = error {
+                showAuthErrorAlert = true
+            } else {
+                showError(message: "Failed to sign in: \(error.localizedDescription)")
+            }
         }
     }
 

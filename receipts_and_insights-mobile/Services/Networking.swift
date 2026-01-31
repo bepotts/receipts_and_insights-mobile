@@ -125,7 +125,8 @@ enum Networking {
     /// - Returns: A `User` object containing the authenticated user's information
     ///
     /// - Throws: `URLError` if the URL is invalid or the request fails.
-    ///           `NSError` with server error message if the server returns a non-2xx status code.
+    ///           `NetworkError.unauthorized` if the server returns 401.
+    ///           `NSError` with server error message if the server returns another non-2xx status code.
     ///
     /// - Note: The function logs the server address and response details for debugging purposes.
     static func userLogin(email: String, password: String) async throws -> User {
@@ -153,6 +154,10 @@ enum Networking {
         let responseBody = String(data: data, encoding: .utf8) ?? "<unable to decode>"
         Logger.networking.info("[signIn] Response status: \(httpResponse.statusCode)")
         Logger.networking.info("[signIn] Response body: \(responseBody)")
+
+        if httpResponse.statusCode == 401 {
+            throw NetworkError.unauthorized
+        }
 
         guard (200 ... 299).contains(httpResponse.statusCode) else {
             if let errorDict = try? JSONSerialization.jsonObject(with: data) as? [String: Any],

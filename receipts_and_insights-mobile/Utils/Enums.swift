@@ -7,6 +7,13 @@
 
 import Foundation
 
+// MARK: - NetworkError
+
+/// Errors that can be thrown by networking operations.
+enum NetworkError: Error {
+    case unauthorized
+}
+
 // MARK: - AppStrings
 
 enum AppStrings {
