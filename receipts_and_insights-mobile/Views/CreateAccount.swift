@@ -57,7 +57,7 @@ struct CreateAccountView: View {
             }
             .navigationBarHidden(true)
         }
-        .fullScreenCover(isPresented: $showLandingPage) {
+        .navigationDestination(isPresented: $showLandingPage) {
             LandingPageView()
         }
     }
