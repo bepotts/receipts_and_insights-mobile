@@ -21,6 +21,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>PHOTO_UPLOAD_ROUTE</key>
+	<string>$(PHOTO_UPLOAD_ROUTE)</string>
 	<key>SIGN_OUT_ROUTE</key>
 	<string>$(SIGN_OUT_ROUTE)</string>
 	<key>SIGN_UP_ROUTE</key>

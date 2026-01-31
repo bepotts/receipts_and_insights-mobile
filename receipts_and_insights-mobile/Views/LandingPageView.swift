@@ -6,12 +6,16 @@
 //
 
 import os
+import PhotosUI
 import SwiftUI
 
 struct LandingPageView: View {
     @EnvironmentObject private var userManager: UserManager
     @Environment(\.dismiss) private var dismiss
     @State private var showLoginView: Bool = false
+    @State private var selectedItem: PhotosPickerItem?
+    @State private var isUploading: Bool = false
+    @State private var uploadError: String?
 
     var body: some View {
         NavigationView {
@@ -19,6 +23,33 @@ struct LandingPageView: View {
                 Text("This is the landing page view.")
                     .font(.title)
                     .padding()
+
+                PhotosPicker(
+                    selection: $selectedItem,
+                    matching: .images,
+                    photoLibrary: .shared()
+                ) {
+                    Label("Upload Photo", systemImage: "photo.on.rectangle.angled")
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(isUploading || userManager.currentUser == nil)
+                .onChange(of: selectedItem) { _, newItem in
+                    Task {
+                        await uploadSelectedPhoto(newItem)
+                    }
+                }
+
+                if isUploading {
+                    ProgressView("Uploading...")
+                        .padding()
+                }
+
+                if let error = uploadError {
+                    Text(error)
+                        .font(.caption)
+                        .foregroundColor(.red)
+                        .padding()
+                }
 
                 if let user = userManager.currentUser {
                     VStack(spacing: 8) {
@@ -46,6 +77,36 @@ struct LandingPageView: View {
                     }
                 }
             }
+        }
+    }
+
+    private func uploadSelectedPhoto(_ item: PhotosPickerItem?) async {
+        guard let item else { return }
+        guard let sessionToken = userManager.currentUser?.session_token else {
+            await MainActor.run { uploadError = "Not logged in" }
+            return
+        }
+
+        await MainActor.run {
+            isUploading = true
+            uploadError = nil
+        }
+
+        do {
+            if let data = try await item.loadTransferable(type: Data.self) {
+                try await Networking.uploadPhoto(imageData: data, sessionToken: sessionToken)
+                Logger.networking.info("[LandingPageView] Photo uploaded successfully")
+            } else {
+                await MainActor.run { uploadError = "Could not load photo" }
+            }
+        } catch {
+            Logger.networking.error("Error uploading photo: \(error.localizedDescription)")
+            await MainActor.run { uploadError = error.localizedDescription }
+        }
+
+        await MainActor.run {
+            isUploading = false
+            selectedItem = nil
         }
     }
 

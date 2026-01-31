@@ -224,4 +224,54 @@ enum Networking {
             throw URLError(.badServerResponse)
         }
     }
+
+    /// Uploads a photo to the server.
+    ///
+    /// - Parameters:
+    ///   - imageData: The image data to upload.
+    ///   - sessionToken: The user's session token for authentication.
+    ///
+    /// - Throws: `URLError` if the URL is invalid or the request fails.
+    ///           `NSError` with server error message if the server returns a non-2xx status code.
+    static func uploadPhoto(imageData: Data, sessionToken: String) async throws {
+        let photoUploadRoute = RouteURLs.photoUploadRoute
+        Logger.networking.info("[uploadPhoto] serverAddress: \(photoUploadRoute)")
+
+        guard let url = URL(string: photoUploadRoute) else {
+            throw URLError(.badURL)
+        }
+
+        let boundary = UUID().uuidString
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.setValue(sessionToken, forHTTPHeaderField: "Authorization")
+
+        var body = Data()
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"photo\"; filename=\"receipt.jpg\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+        body.append(imageData)
+        body.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
+        request.httpBody = body
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse)
+        }
+
+        let responseBody = String(data: data, encoding: .utf8) ?? "<unable to decode>"
+        Logger.networking.info("[uploadPhoto] Response status: \(httpResponse.statusCode)")
+        Logger.networking.info("[uploadPhoto] Response body: \(responseBody)")
+
+        guard (200 ... 299).contains(httpResponse.statusCode) else {
+            if let errorDict = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+               let errorMessage = errorDict["error"] as? String
+            {
+                throw NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: errorMessage])
+            }
+            throw URLError(.badServerResponse)
+        }
+    }
 }

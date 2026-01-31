@@ -49,7 +49,7 @@ struct LoginView: View {
             }
             .navigationBarHidden(true)
             .alert("Login Failed", isPresented: $showAuthErrorAlert) {
-                Button("OK", role: .cancel) { }
+                Button("OK", role: .cancel) {}
             } message: {
                 Text("Email or password is incorrect")
             }
