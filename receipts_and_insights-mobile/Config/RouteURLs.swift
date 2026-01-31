@@ -8,39 +8,23 @@
 import Foundation
 
 enum RouteURLs {
-    static var signUpRoute: String {
-        guard let createUserRoute = Bundle.main.object(forInfoDictionaryKey: "SIGN_UP_ROUTE") as? String else {
-            fatalError("SIGN_UP_ROUTE not found in Info.plist. Please ensure the xcconfig file is properly configured and the Info.plist contains the CREATE_USER_ROUTE key.")
+    private static func requiredRoute(for key: String) -> String {
+        guard let route = Bundle.main.object(forInfoDictionaryKey: key) as? String else {
+            fatalError("\(key) not found in Info.plist. Please ensure the xcconfig file is properly configured and the Info.plist contains the \(key) key.")
         }
 
-        guard !createUserRoute.isEmpty else {
-            fatalError("SIGN_UP_ROUTE is empty. Please set the SIGN_UP_ROUTE0 value in your xcconfig file (Debug.xcconfig or Release.xcconfig).")
+        guard !route.isEmpty else {
+            fatalError("\(key) is empty. Please set the \(key) value in your xcconfig file (Debug.xcconfig or Release.xcconfig).")
         }
 
-        return createUserRoute
+        return route
     }
 
-    static var loginRoute: String {
-        guard let loginRoute = Bundle.main.object(forInfoDictionaryKey: "LOGIN_ROUTE") as? String else {
-            fatalError("LOGIN_ROUTE not found in Info.plist. Please ensure the xcconfig file is properly configured and the Info.plist contains the CREATE_USER_ROUTE key.")
-        }
+    static var signUpRoute: String { requiredRoute(for: "SIGN_UP_ROUTE") }
 
-        guard !loginRoute.isEmpty else {
-            fatalError("LOGIN_ROUTE is empty. Please set the LOGIN_ROUTE value in your xcconfig file (Debug.xcconfig or Release.xcconfig).")
-        }
+    static var loginRoute: String { requiredRoute(for: "LOGIN_ROUTE") }
 
-        return loginRoute
-    }
+    static var signOutRoute: String { requiredRoute(for: "SIGN_OUT_ROUTE") }
 
-    static var signOutRoute: String {
-        guard let signOutRoute = Bundle.main.object(forInfoDictionaryKey: "SIGN_OUT_ROUTE") as? String else {
-            fatalError("SIGN_OUT_ROUTE not found in Info.plist. Please ensure the xcconfig file is properly configured and the Info.plist contains the SIGN_OUT_ROUTE key.")
-        }
-
-        guard !signOutRoute.isEmpty else {
-            fatalError("SIGN_OUT_ROUTE is empty. Please set the SIGN_OUT_ROUTE value in your xcconfig file (Debug.xcconfig or Release.xcconfig).")
-        }
-
-        return signOutRoute
-    }
+    static var photoUploadRoute: String { requiredRoute(for: "PHOTO_UPLOAD_ROUTE") }
 }
